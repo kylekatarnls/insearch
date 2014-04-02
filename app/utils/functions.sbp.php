@@ -1,4 +1,4 @@
-<?php
+<?
 
 f §
 	$args = func_get_args()
@@ -141,7 +141,7 @@ f style
 		$cssFile = CssParser::cssFile($args[0], $isALib)
 		$time = 0
 		if file_exists($stylusFile)
-			$time = fileLastTime($stylusFile)
+			$time = DependancesCache::lastTime($stylusFile, 'fileLastTime')
 			if !file_exists($cssFile) || $time > fileLastTime($cssFile)
 				(new CssParser($stylusFile))->out($cssFile)
 			$time -= 1363188938
@@ -158,7 +158,7 @@ f script
 		$jsFile = JsParser::jsFile($args[0], $isALib)
 		$time = 0;
 		if file_exists($coffeeFile)
-			$time = fileLastTime($coffeeFile)
+			$time = DependancesCache::lastTime($coffeeFile, 'fileLastTime')
 			if !file_exists($jsFile) || $time > fileLastTime($jsFile)
 				(new JsParser($coffeeFile))->out($jsFile)
 			$time -= 1363188938
