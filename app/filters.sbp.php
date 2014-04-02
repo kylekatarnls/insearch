@@ -62,6 +62,7 @@ App::before(f° $request
 			// Credit : https://github.com/francescomalatesta
 		)
 	)
+	header_remove('Server')
 )
 
 
