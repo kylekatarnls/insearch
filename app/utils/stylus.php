@@ -27,6 +27,7 @@ class StylusException extends Exception
 class Stylus
 {
     private $read_dir;
+    private $read_file;
     private $write_dir;
     private $import_dir;
     private $file;
@@ -40,6 +41,8 @@ class Stylus
     {
         if(!is_null($file))
         {
+            $this->read_file = $file;
+            DependancesCache::flush($file);
             $this->setImportDir(dirname($file), true);
         }
     }
@@ -53,9 +56,9 @@ class Stylus
      * setReadDir - sets the directory to read from
      */
 
-    public function setReadDir($dir)
+    public function setReadDir($dir, $force = false)
     {
-        if (is_dir($dir)) {
+        if ($force || is_dir($dir)) {
             $this->read_dir = $dir;
         } else {
             throw new StylusException($dir.' is not a directory.');
@@ -68,9 +71,9 @@ class Stylus
      * setWriteDir - sets the directory to write to
      */
 
-    public function setWriteDir($dir)
+    public function setWriteDir($dir, $force = false)
     {
-        if (is_dir($dir)) {
+        if ($force || is_dir($dir)) {
             $this->write_dir = $dir;
         } else {
             throw new StylusException($dir.' is not a directory.');
@@ -221,7 +224,6 @@ class Stylus
     private function call($name, $arguments, $parent_args = null)
     {
         $function = $this->functions[$name];
-        var_dump($function);
         $output = '';
         foreach ($function['contents'] as $i => $line) {
             $line = $this->insertVariables($line, true);
@@ -392,6 +394,7 @@ class Stylus
         $file_handle = fopen($path, 'r') or StylusException::report('Could not open '.$path);
         $contents = fread($file_handle, filesize($path)) or StylusException::report('Could not read '.$path);
         fclose($file_handle);
+        DependancesCache::add($this->read_file, $path);
         if($isStylus && class_exists('CssParser') && isset(CssParser::$activeInstance)){
             $contents = CssParser::$activeInstance->filterCssb($contents);
         }
@@ -502,6 +505,8 @@ class Stylus
             $file_handle = fopen($filename, 'r') or StylusException::report('Could not open '.$filename);
             $contents = fread($file_handle, filesize($filename)) or StylusException::report('Could not read '.$filename);
             $lines = array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen'));
+            $this->read_file = $filename;
+            DependancesCache::flush($filename);
 
             for ($i=0; $i<count($lines); $i++) {
                 $line = $lines[$i];

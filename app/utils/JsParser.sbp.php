@@ -16,31 +16,38 @@ JsParser
 			>parse(>coffeeFile)
 		);
 
+	s+ resolveRequire $coffeeFile, $firstFile = null
+		if is_null($firstFile)
+			$firstFile = $coffeeFile
+		< preg_replace_callback(
+			'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\n\r]|$)#i',
+			f° $match use $coffeeFile, $firstFile
+				$file = stripslashes($match[2]);
+				$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
+					$file :
+					static::findFile($file);
+				$isCoffee = empty($match[3]) ?
+					ends_with($file, '.coffee') :
+					in_array(strtolower($match[3]), explode('|', :YES));
+				DependancesCache::add($firstFile, $file);
+				$file = static::resolveRequire($file, $firstFile)
+				if ! $isCoffee
+					$file = "`$file`";
+				< $file
+			,
+			file_get_contents($coffeeFile)
+		)
+
 	+ parse $coffeeFile
+		DependancesCache::flush($coffeeFile);
 		$code = CoffeeScript\Compiler::compile(
-			preg_replace_callback(
-				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\n\r])#i',
-				f° $match use $coffeeFile
-					$file = stripslashes($match[2]);
-					$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
-						$file :
-						static::findFile($file);
-					$isCoffee = empty($match[3]) ?
-						ends_with($file, '.coffee') :
-						in_array(strtolower($match[3]), explode('|', :YES));
-					file_get_contents(**$file);
-					if !$isCoffee
-						$file = "`$file`";
-					< $file;
-				,
-				file_get_contents($coffeeFile)
-			),
+			static::resolveRequire($coffeeFile),
 			array(
 				'filename' => $coffeeFile,
 				'bare' => true
 			)
 		);
-		if !Config::get('app.debug')
+		if ! Config::get('app.debug')
 			$code = preg_replace('#;(?:\\r\\n|\\r|\\n)\\h*#', ';', $code);
 			$code = preg_replace('#(?:\\r\\n|\\r|\\n)\\h*#', ' ', $code);
 		< $code;

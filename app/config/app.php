@@ -139,7 +139,7 @@ return array(
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',
 		'Auth'            => 'Illuminate\Support\Facades\Auth',
 		'Blade'           => 'Illuminate\Support\Facades\Blade',
-		'Cache'           => 'Illuminate\Support\Facades\Cache',
+		//'Cache'           => 'Illuminate\Support\Facades\Cache',
 		'ClassLoader'     => 'sbp\laravel\ClassLoader',
 		'Config'          => 'Illuminate\Support\Facades\Config',
 		'Controller'      => 'Illuminate\Routing\Controller',

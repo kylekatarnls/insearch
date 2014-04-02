@@ -207,18 +207,19 @@ CssParser
 			$code = file_get_contents(>fichier);
 		list($type, $i, $a) = >typeAndIndent($code, $options);
 
-		$dir = dirname(>fichier);
+		$dir = dirname($fichier = >fichier);
 		if strpos($code,'[[import') !== false
 			$code = preg_replace_callback(
 				'#\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]#',
-				f° $f use $dir
+				f° $f use $dir, $fichier
 					if substr($f[0],-7) !== '.stylus'
 						< '/*!'.$f[0].'!*/';
 					trim(**$f[2], "\" \n\t");
 					$file = $dir.'/'.$f[2];
 					if !file_exists($file)
 						$file = $dir.'/lib/'.$f[2];
-					$fgc = file_get_contents($dir.'/'.$f[2]);
+					$fgc = file_get_contents($file);
+					DependancesCache::add($fichier, $file);
 					// if(!empty($f[1]))
 					// 	try
 					// 		$fgc=(new lessc)->parse($fgc);
