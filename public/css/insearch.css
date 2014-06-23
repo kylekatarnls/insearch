@@ -108,7 +108,7 @@ form.login a {
 }
 #footer {
 	height: 60px;
-	background-color: #e8e8e8;
+	background: url('/img/supinfo.png') 4px center no-repeat #e8e8e8;
 }
 #footer p {
 	margin: 0;

@@ -15,7 +15,7 @@ sbp_include_once(app_path() . '/utils/functions.php')
 |--------------------------------------------------------------------------
 */
 
-if($trustedHosts = Config::get('app.trusted'))
+if $trustedHosts = Config::get('app.trusted')
 	Request::setTrustedHosts($trustedHosts)
 
 
