@@ -108,12 +108,15 @@ form.login
 
 #footer
 	height footer-height
-	background url('/img/supinfo.png') 4px center no-repeat #e8e8e8
+	background #e8e8e8
 
 	p
 		margin 0
 		padding 10px
 		tac
+
+@media screen and (min-width: 800px)
+	background url('/img/supinfo.png') 4px center no-repeat #e8e8e8
 
 .autocomplete
 	db
