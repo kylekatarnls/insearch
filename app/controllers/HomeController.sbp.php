@@ -11,7 +11,7 @@ HomeController:BaseController
 	+ searchResult $page = 1, $q = null, $resultsPerPage = null, $form = false
 		$q = is_null($q) ? Request::get('q', $page) : urldecode($q)
 		$data = CrawledContent::getSearchResult($q)
-				->paginatedData($page, $resultsPerPage, array(
+			->paginatedData($page, $resultsPerPage, array(
 				'q' => $q,
 				'pageUrl' => '/%d/'.urlencode($q).'{keepResultsPerPage}',
 				'resultsPerPageUrl' => '/'.$page.'/'.urlencode($q).'/%d'

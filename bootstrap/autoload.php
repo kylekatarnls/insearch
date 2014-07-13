@@ -59,12 +59,14 @@ Patchwork\Utf8\Bootup::initMbstring();
 |
 */
 
-sbp\laravel\ClassLoader::register(true, function ($file)
+function sbp2phpFilePath($file)
 {
-	$name = ltrim(substr($file, max(intval(strrpos($file, '/')), intval(strrpos($file, '\\')))), '\\/');
+	$slash = max(intval(strrpos($file, '/')), intval(strrpos($file, '\\')));
+	$name = ltrim(substr($file, $slash), '\\/');
 	$name = preg_replace('#(\.sbp\.php|\.php\.sbp|\.php|\.sbp)$#', '', $name);
-	return $name . '-' . strtr(rtrim(base64_encode(sha1($file, true)), '='), '+/', '-_');
-});
+	return $name . '-' . strtr(rtrim(base64_encode(sha1(strtr(realpath(substr($file, 0, $slash)), '\\', '/'), true)), '='), '+/', '-_');
+}
+sbp\laravel\ClassLoader::register(true, 'sbp2phpFilePath');
 
 /*
 |--------------------------------------------------------------------------

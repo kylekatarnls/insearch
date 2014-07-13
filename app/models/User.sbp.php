@@ -109,3 +109,13 @@ User:Eloquent <<< UserInterface, RemindableInterface
 	 */
 	+ isContributor
 		<>haveFlags(:CONTRIBUTOR);
+
+
+	+ getRememberToken
+		<>remember_token
+
+	+ setRememberToken $value
+		>remember_token = $value
+
+	+ getRememberTokenName
+		< 'remember_token'

@@ -34,7 +34,7 @@ return array(
 	*/
 
 	'default' => (file_exists(__DIR__ . '/../../../sqlite') ?
-	    'sqlite' : (file_exists(__DIR__ . '/../../../mysql') ?
+	    'sqlite' : (false && file_exists(__DIR__ . '/../../../mysql') ?
             'mysql' :
             'pgsql'
         )

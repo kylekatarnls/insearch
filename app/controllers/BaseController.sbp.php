@@ -2,6 +2,7 @@
 
 BaseController:Controller
 
+	CACHE_ENABLED = true
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -15,7 +16,7 @@ BaseController:Controller
 		$jadeFile = app_path() . '/views/' . $view . '.jade'
 		if(file_exists($jadeFile))
 			$jade = new Jade(array(
-				'cache' => Config::get('app.debug') ?
+				'cache' => ! :CACHE_ENABLED && Config::get('app.debug') ?
 					null :
 					app_path() . '/storage/views'
 			))
