@@ -2,5 +2,6 @@
 /vendor
 composer.lock
 .DS_Store
+.idea
 Thumbs.db
 *.log
