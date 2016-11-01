@@ -4,11 +4,11 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*",
-		"kylekatarnls/utils": "*",
-		"kylekatarnls/sbp": "*",
-		"kylekatarnls/jade-php": "*",
-		"coffeescript/coffeescript": "*"
+		"laravel/framework": "^4.1",
+		"kylekatarnls/utils": "^1.1",
+		"kylekatarnls/sbp": "^1.6",
+		"pug-php/pug": "^2.4",
+		"kylekatarnls/coffeescript": "^1.0"
 	},
 	"autoload": {
 		"classmap": [
